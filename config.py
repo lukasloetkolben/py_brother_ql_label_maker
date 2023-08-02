@@ -16,4 +16,4 @@ STYLE = Path(ASSETS_DIR, "style.qss")
 COLORS_FILE = Path(ASSETS_DIR, "colors.json")
 
 with open(COLORS_FILE) as f:
-   COLORS = json.load(f)
+    COLORS = json.load(f)

@@ -5,7 +5,7 @@ from pathlib import Path
 
 from PySide6.QtCore import Qt
 from PySide6.QtGui import QAction
-from PySide6.QtWidgets import QMainWindow, QSplitter, QTabWidget, QGridLayout, QComboBox, QLineEdit, QLabel, QWidget, \
+from PySide6.QtWidgets import QMainWindow, QSplitter, QTabWidget, QComboBox, QLineEdit, QLabel, QWidget, \
     QHBoxLayout, QVBoxLayout, QApplication
 from PySide6.QtWidgets import QMenu
 from brother_ql.labels import ALL_LABELS

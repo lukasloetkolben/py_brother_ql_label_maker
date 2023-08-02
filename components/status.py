@@ -4,6 +4,7 @@ from PySide6.QtWidgets import (QHBoxLayout, QFrame, QPushButton, QGraphicsOpacit
 import config
 from icons import close_icon
 
+
 class StatusComponent(QFrame):
 
     def __init__(self):

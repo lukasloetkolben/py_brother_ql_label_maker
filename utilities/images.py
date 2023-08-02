@@ -1,13 +1,14 @@
 import traceback
 import uuid
 from pathlib import Path
-from PIL import ImageDraw, ImageFont
+
 import PIL.Image
+from PIL import ImageDraw, ImageFont
 
 import config
 
 
-def create_icon_text_image(width, height, text="", text_size=45, icon_path:Path=None, icon_size=0.8):
+def create_icon_text_image(width, height, text="", text_size=45, icon_path: Path = None, icon_size=0.8):
     """
     Create a labeled image with the input text added to the selected image and save it.
     """

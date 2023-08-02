@@ -2,11 +2,12 @@
 
 import os
 import sys
-import components
+
 from PySide6.QtCore import Qt
 from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtWidgets import QApplication
 
+import components
 from config import COLORS, CONFIG_DIR, TEMP_DIR, STYLE
 from utilities.settings import Settings
 
@@ -37,6 +38,7 @@ if __name__ == '__main__':
     qapp.setStyleSheet(apply_style(STYLE))
 
     from components.app_window import AppWindow
+
     a = AppWindow()
     components.main_window = a
     a.show()

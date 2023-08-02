@@ -1,6 +1,5 @@
 from PySide6.QtGui import QIcon, QMovie
 from PySide6.QtWidgets import QPushButton
-from config import COLORS
 
 
 class BaseButton(QPushButton):

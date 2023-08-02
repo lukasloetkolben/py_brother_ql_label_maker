@@ -1,14 +1,13 @@
-from PySide6.QtCore import Signal
-from PySide6.QtWidgets import QVBoxLayout, QWidget, QLabel, QPushButton, QFileDialog, QLineEdit
-
-from components.buttons import PrimaryButton, SecondaryButton, SuccessButton
-from utilities.images import create_icon_text_image
 from pathlib import Path
 
-from utilities.printer import run_brother_ql_command, get_label_by_identifier
-from utilities.settings import Settings
+from PySide6.QtCore import Signal
+from PySide6.QtWidgets import QVBoxLayout, QWidget, QLabel, QFileDialog, QLineEdit
 
 import components
+from components.buttons import PrimaryButton, SecondaryButton, SuccessButton
+from utilities.images import create_icon_text_image
+from utilities.printer import run_brother_ql_command, get_label_by_identifier
+from utilities.settings import Settings
 
 
 class IconTextTab(QWidget):
@@ -44,7 +43,7 @@ class IconTextTab(QWidget):
 
     def on_create_clicked(self):
         label = get_label_by_identifier(Settings.LABEL_TYPE)
-        height, width  = label.dots_total
+        height, width = label.dots_total
         text = self.text_input.text()
         text_size = 45
         icon_path = self.file_path
