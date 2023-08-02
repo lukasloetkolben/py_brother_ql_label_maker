@@ -21,6 +21,8 @@ def color_icon(icon_path: Path, hex_color):
 
 icon_color = COLORS.get("bluegray-900")
 close_icon = color_icon(Path(ICONS_DIR, "close_FILL0_wght400_GRAD0_opsz48.svg"), icon_color)
+print_icon = color_icon(Path(ICONS_DIR, "print_FILL0_wght400_GRAD0_opsz48.svg"), icon_color)
+receipt_long_icon = color_icon(Path(ICONS_DIR, "receipt_long_FILL0_wght400_GRAD0_opsz48.svg"), icon_color)
 settings_icon = color_icon(Path(ICONS_DIR, "settings_FILL0_wght400_GRAD0_opsz48.svg"), icon_color)
 
 # Animated Gifs

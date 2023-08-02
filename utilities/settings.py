@@ -4,25 +4,41 @@ import sys
 import config
 
 
+def get_variable_name(f):
+    pass
+
+
 class Settings:
     DPI = 60 if sys.platform == 'darwin' else 80
+    PRINTER_MODEL = ""
+    PRINTER_IDENTIFIER = ""
+    LABEL_TYPE = ""
+
+    @staticmethod
+    def get_all_variables():
+        out = []
+        for i, j in Settings.__dict__.items():
+            if not i.startswith("_") and not callable(j) and not isinstance(j, staticmethod):
+                out.append((i.lower(), j))
+
+        return out
+
+    @staticmethod
+    def get_variable_name(variable, namespace=globals()):
+        for name, var in namespace.items():
+            if var is variable:
+                return name
+        return None
 
     @staticmethod
     def save_setting_json():
         settings_file = config.SETTINGS_FILE
-        settings = {
-            "dpi": Settings.DPI,
-        }
+        settings = {}
+        for key, value in Settings.get_all_variables():
+            settings[key] = value
+
         with open(settings_file, "w") as out_file:
             json.dump(settings, out_file)
-
-    @staticmethod
-    def read_js(settings_json, param, value):
-        s = settings_json.get(value)
-        if s is None:
-            return param
-        else:
-            return s
 
     @staticmethod
     def read_setting_json():
@@ -30,6 +46,13 @@ class Settings:
         if settings_file.is_file():
             with open(settings_file, "r") as json_file:
                 settings_json = json.load(json_file)
-                Settings.DPI = Settings.read_js(settings_json, Settings.DPI, "dpi")
+                for var, value in Settings.get_all_variables():
+                    key = var.lower()  # Convert variable name to lowercase as per the JSON format
+                    if key in settings_json:
+                        setattr(Settings, var.upper(), settings_json[key])  # Set the value of the variable
 
         Settings.save_setting_json()
+
+
+if __name__ == '__main__':
+    Settings.read_setting_json()

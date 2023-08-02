@@ -1,8 +1,7 @@
 from PySide6.QtCore import Qt
-from PySide6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout, QGridLayout
+from PySide6.QtWidgets import QDialog, QHBoxLayout, QVBoxLayout
 
 from components.buttons import SecondaryButton, PrimaryButton
-from components.status import StatusComponent
 
 
 class SettingsDialog(QDialog):

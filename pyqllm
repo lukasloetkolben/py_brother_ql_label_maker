@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Get the current script's directory
+SCRIPT_DIR="$(dirname "$(readlink -f "$0")")"
+
+# Check if venv/bin/activate exists
+if ! test -f "$SCRIPT_DIR/venv/bin/python3"; then
+
+    # Check if Python 3 is installed
+    if ! command -v python3 &> /dev/null; then
+        echo "Python 3 is not installed. Please install Python 3 and try again."
+        exit 1
+    fi
+
+    # Create a new Python 3 virtual environment
+    python3 -m venv venv --system-site-packages
+
+    # Activate the virtual environment
+    source venv/bin/activate
+
+    # Install the dependencies from requirements.txt
+    pip install -r requirements.txt
+
+    # Deactivate the virtual environment
+    deactivate
+
+    echo "Virtual environment created and dependencies installed."
+fi
+
+
+# Run the Python script
+source  "$SCRIPT_DIR/venv/bin/activate"
+$SCRIPT_DIR/venv/bin/python3 $SCRIPT_DIR/run.py

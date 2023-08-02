@@ -12,7 +12,7 @@ class StatusComponent(QFrame):
 
         # Widgets
         self.message_label = QLabel("")
-        self.close_button = QPushButton(icon=close_icon)
+        self.close_button = QPushButton(icon=close_icon, clicked=self.fade_out)
         self.close_button.setFlat(True)
 
         # Layout
@@ -31,8 +31,6 @@ class StatusComponent(QFrame):
         self.timer.setSingleShot(True)
         self.timer.timeout.connect(self.fade_out)
 
-        # Signals
-        self.close_button.clicked.connect(self.fade_out)
         self.hide()
 
     def fade_out(self):
@@ -79,10 +77,8 @@ class StatusComponent(QFrame):
         self.setFixedWidth(min(self.parent().rect().width() - margin * 2, 800))
         x = self.parent().rect().center().x() - (self.width() / 2)
         y = self.parent().rect().top() + margin
-        try:
+        if self.parent().menuBar():
             y += self.parent().menuBar().height()
-        except Exception:
-            pass
         self.move(x, y)
         self.raise_()
 

@@ -1,0 +1,28 @@
+QPushButton::disabled{
+    background-color:'bluegray-100';
+}
+
+.PrimaryButton{
+    background-color:'primary-600';
+    color: white;
+}
+
+.SecondaryButton{
+    background-color:'bluegray-400';
+    color: white;
+}
+
+.DangerButton{
+    background-color:'red-700';
+    color: white;
+}
+
+.SuccessButton{
+    background-color:'green-600';
+    color: white;
+}
+
+.TransparentButton{
+    background-color:rgba(0,0,0,0);
+    color: black;
+}
