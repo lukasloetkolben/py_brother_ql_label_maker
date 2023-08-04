@@ -51,13 +51,13 @@ class StatusComponent(QFrame):
 
     def show_message(self, message, status='error'):
         if status == 'error':
-            background_color = config.COLORS.get('red-300')
+            background_color = config.COLORS.get('red-400')
         elif status == 'warning':
-            background_color = config.COLORS.get('yellow-300')
+            background_color = config.COLORS.get('yellow-400')
         elif status == 'success':
-            background_color = config.COLORS.get('green-300')
+            background_color = config.COLORS.get('green-500')
         else:
-            background_color = config.COLORS.get('gray-300')
+            background_color = config.COLORS.get('gray-400')
 
         style = f"background-color: {background_color};  border-radius: 4px; color: #FFFFFF;"
         self.setStyleSheet(style)
@@ -66,7 +66,7 @@ class StatusComponent(QFrame):
         self.setFixedHeight(35)
         self.update_position()
         self.show()
-        self.timer.start(5000)  # hide message after 5 seconds
+        self.timer.start(3000)  # hide message after 3 seconds
 
     def setParent(self, parent):
         super(StatusComponent, self).setParent(parent)
@@ -78,8 +78,7 @@ class StatusComponent(QFrame):
         self.setFixedWidth(min(self.parent().rect().width() - margin * 2, 800))
         x = self.parent().rect().center().x() - (self.width() / 2)
         y = self.parent().rect().top() + margin
-        if self.parent().menuBar():
-            y += self.parent().menuBar().height()
+
         self.move(x, y)
         self.raise_()
 

@@ -3,16 +3,12 @@ import sys
 
 import config
 
-
-def get_variable_name(f):
-    pass
-
-
 class Settings:
     DPI = 60 if sys.platform == 'darwin' else 80
     PRINTER_MODEL = ""
     PRINTER_IDENTIFIER = ""
     LABEL_TYPE = ""
+    SAVE_AS_PATH = config.HOME_DIR
 
     @staticmethod
     def get_all_variables():
@@ -22,13 +18,6 @@ class Settings:
                 out.append((i.lower(), j))
 
         return out
-
-    @staticmethod
-    def get_variable_name(variable, namespace=globals()):
-        for name, var in namespace.items():
-            if var is variable:
-                return name
-        return None
 
     @staticmethod
     def save_setting_json():

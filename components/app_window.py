@@ -4,19 +4,17 @@ import shutil
 from pathlib import Path
 
 from PySide6.QtCore import Qt
-from PySide6.QtGui import QAction
 from PySide6.QtWidgets import QMainWindow, QSplitter, QTabWidget, QComboBox, QLineEdit, QLabel, QWidget, \
     QHBoxLayout, QVBoxLayout, QApplication
-from PySide6.QtWidgets import QMenu
 from brother_ql.labels import ALL_LABELS
 from brother_ql.models import ALL_MODELS
 
 from components.buttons import SuccessButton
 from components.icon import Icon
 from components.preview import PreviewComponent
-from components.settings import SettingsDialog
 from components.status import StatusComponent
 from components.tabs.icon_text import IconTextTab
+from components.tabs.image import ImageTab
 from components.tabs.shipping import ShippingTab
 from config import TEMP_DIR
 from icons import receipt_long_icon, print_icon
@@ -30,16 +28,8 @@ class AppWindow(QMainWindow):
         super(AppWindow, self).__init__()
         # Window settings
         self.setWindowTitle("Python Brother QL Label Maker (PyBQLLM)")
-        self.setGeometry(0, 0, 800, 600)
+        self.setGeometry(0, 0, 940, 620)
         self.setWindowState(Qt.WindowState.WindowActive)
-
-        # Menubar
-        menubar = self.menuBar()
-        file = QMenu("File", self)
-        menubar.addMenu(file)
-        settings_button = QAction("Settings", self)
-        settings_button.triggered.connect(self.on_settings_clicked)
-        file.addAction(settings_button)
 
         # Widgets
         self.status = StatusComponent()
@@ -63,12 +53,11 @@ class AppWindow(QMainWindow):
         self.preview = PreviewComponent(self)
 
         icon_text = IconTextTab(self)
-        self.tabs.addTab(icon_text, "Icon & Text")
+        self.tabs.addTab(icon_text, "Icon && Text")
         shipping = ShippingTab(self)
         self.tabs.addTab(shipping, "Shipping")
-
-        # Dialogs
-        self.settings_form = SettingsDialog(self)
+        image = ImageTab(self)
+        self.tabs.addTab(image, "Image")
 
         # Layouts
         self.splitter.addWidget(self.tabs)
@@ -96,8 +85,9 @@ class AppWindow(QMainWindow):
 
         # Signals
         icon_text.preview_changed.connect(self.on_preview_changed)
+        shipping.preview_changed.connect(self.on_preview_changed)
+        image.preview_changed.connect(self.on_preview_changed)
         self.label_type_select.currentIndexChanged.connect(self.on_label_type_changed)
-
         self.model_type_select.currentIndexChanged.connect(self.on_printer_settings_changed)
         self.printer_identifier.textChanged.connect(self.on_printer_settings_changed)
 
@@ -110,13 +100,13 @@ class AppWindow(QMainWindow):
         self.move(center_x - self.width() / 2, center_y - self.height() / 2)
 
     def on_preview_changed(self, image_path: Path, rotation: int):
-        self.preview.show_image(image_path, rotation)
+        if image_path is None:
+            self.preview.clear()
+        else:
+            self.preview.show_image(image_path, rotation)
 
     def closeEvent(self, event):
         shutil.rmtree(TEMP_DIR)
-
-    def on_settings_clicked(self):
-        self.settings_form.exec()
 
     def on_label_type_changed(self):
         Settings.LABEL_TYPE = get_label_by_name(self.label_type_select.currentText()).identifier

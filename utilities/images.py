@@ -3,12 +3,40 @@ import uuid
 from pathlib import Path
 
 import PIL.Image
+
+from PIL import ImageOps
+import PIL.Image
 from PIL import ImageDraw, ImageFont
+from PIL import ImageOps
 
 import config
 
 
-def create_icon_text_image(width, height, text="", text_size=45, icon_path: Path = None, icon_size=0.8):
+def create_centered_image_on_background(image, width, height, bg_color=(255, 255, 255)):
+    """
+    Create a new image with a centered image pasted onto a blank background.
+    Returns:
+        PIL.Image: The new image with the input image centered on a blank background.
+    """
+    width = int(width)
+    height = int(height)
+    image = ImageOps.contain(image, (width, height))
+
+    background = PIL.Image.new("RGBA", (width, height), color=bg_color)
+
+    image_width, image_height = image.size
+
+    x_offset = (width - image_width) // 2
+    y_offset = (height - image_height) // 2
+    try:
+        background.paste(image, (x_offset, y_offset), image)
+    except Exception:
+        background.paste(image, (x_offset, y_offset))
+
+    return background
+
+
+def create_icon_text_image(width, height, text="", font_size=45, font_family="Arial", icon_path = None, icon_size=.8):
     """
     Create a labeled image with the input text added to the selected image and save it.
     """
@@ -41,7 +69,7 @@ def create_icon_text_image(width, height, text="", text_size=45, icon_path: Path
     draw = ImageDraw.Draw(background)
 
     # Get the dimensions of the text using the provided font_size
-    font = ImageFont.truetype("Arial.ttf", text_size)
+    font = ImageFont.truetype(f"{font_family}.ttf", font_size)
     text_width, text_height = font.getsize(text)
 
     # Calculate the available width for the text
@@ -50,7 +78,7 @@ def create_icon_text_image(width, height, text="", text_size=45, icon_path: Path
     # Reduce the font size until the text fits within the available width
     while text_width > (available_width - 60):
         text_size -= 5
-        font = ImageFont.truetype("Arial.ttf", text_size)
+        font = ImageFont.truetype(font_family, text_size)
         text_width, text_height = font.getsize(text)
 
     # Calculate the text_x coordinate to center the text between the icon and the right edge
