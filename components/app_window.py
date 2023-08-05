@@ -27,7 +27,7 @@ class AppWindow(QMainWindow):
     def __init__(self):
         super(AppWindow, self).__init__()
         # Window settings
-        self.setWindowTitle("Python Brother QL Label Maker (PyBQLLM)")
+        self.setWindowTitle("Python Brother QL Label Maker (PBQLLM)")
         self.setGeometry(0, 0, 940, 620)
         self.setWindowState(Qt.WindowState.WindowActive)
 

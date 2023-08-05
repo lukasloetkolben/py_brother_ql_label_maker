@@ -31,7 +31,7 @@ cd py_brother_ql_label_maker
 Launch PBQLLM by running:
 
 ``` bash
-./pqllm
+./pbqllm
 ```
 
 If a Python 3 virtual environment doesn't exist, it will be automatically created.
