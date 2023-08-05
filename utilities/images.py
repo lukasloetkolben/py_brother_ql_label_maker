@@ -77,8 +77,8 @@ def create_icon_text_image(width, height, text="", font_size=45, font_family="Ar
 
     # Reduce the font size until the text fits within the available width
     while text_width > (available_width - 60):
-        text_size -= 5
-        font = ImageFont.truetype(font_family, text_size)
+        font_size -= 5
+        font = ImageFont.truetype(font_family, font_size)
         text_width, text_height = font.getsize(text)
 
     # Calculate the text_x coordinate to center the text between the icon and the right edge
