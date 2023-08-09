@@ -36,7 +36,7 @@ def create_centered_image_on_background(image, width, height, bg_color=(255, 255
     return background
 
 
-def create_icon_text_image(width, height, text="", font_size=45, font_family="Arial", icon_path = None, icon_size=.8):
+def create_icon_text_image(width, height, text="",text_rotation=0, font_size=45, font_family="Arial", icon_path = None, icon_rotation=0, icon_size=.8):
     """
     Create a labeled image with the input text added to the selected image and save it.
     """
@@ -44,10 +44,12 @@ def create_icon_text_image(width, height, text="", font_size=45, font_family="Ar
 
     if icon_path is not None and Path(icon_path).is_file():
         icon = PIL.Image.open(icon_path)
+        icon = icon.rotate(icon_rotation, expand=True)
         # Scale the image to the desired height while maintaining the aspect ratio
         icon_height = int(height * icon_size)
         icon_width = int(icon_height * icon.width / icon.height)
         icon = icon.resize((icon_width, icon_height), PIL.Image.LANCZOS)
+
     else:
         icon_height = 1
         icon_width = 1
