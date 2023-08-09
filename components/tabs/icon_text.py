@@ -27,7 +27,10 @@ class IconTextTab(QWidget):
         self.clear_file_path_button = DangerButton("x", clicked=self.on_clear_file_path_clicked)
         self.clear_file_path_button.setFixedWidth(25)
         self.clear_file_path_button.hide()
-        self.icon_rotation_input = QLineEdit()
+        self.icon_rotation_slider = QSlider(Qt.Horizontal)
+        self.icon_rotation_slider.setMinimum(0)
+        self.icon_rotation_slider.setMaximum(3)  # 0, 90, 180, 270 = 4 positions
+
         self.icon_size = QSlider(Qt.Horizontal)
         self.icon_size.setMinimum(10)
         self.icon_size.setMaximum(200)
@@ -37,7 +40,10 @@ class IconTextTab(QWidget):
         self.secondary_text_input = QLineEdit()
         self.fonts = QComboBox()
         self.fonts.addItems(["Arial"])
-        self.text_rotation_input = QLineEdit()
+        self.text_rotation_slider = QSlider(Qt.Horizontal)
+        self.text_rotation_slider.setMinimum(0)
+        self.text_rotation_slider.setMaximum(3)  # 0, 90, 180, 270 = 4 positions
+
         self.font_size = QSlider(Qt.Horizontal)
         self.font_size.setMinimum(5)
         self.font_size.setMaximum(250)
@@ -53,7 +59,7 @@ class IconTextTab(QWidget):
         layout.addWidget(self.clear_file_path_button, 0, 5)
         layout.addWidget(load_icon_button, 1, 0, 1, 6)
         layout.addWidget(QLabel("Icon Rotation:"), 2, 0)
-        layout.addWidget(self.icon_rotation_input, 2, 1, 1, 5)
+        layout.addWidget(self.icon_rotation_slider, 2, 1, 1, 5)
         layout.addWidget(QLabel("Icon Size:"), 3, 0)
         layout.addWidget(self.icon_size, 3, 1, 1, 5)
         layout.addItem(QSpacerItem(30, 30), 4, 0)
@@ -62,7 +68,7 @@ class IconTextTab(QWidget):
         layout.addWidget(QLabel("Font:"), 6, 0)
         layout.addWidget(self.fonts, 6, 1, 1, 5)
         layout.addWidget(QLabel("Text Rotation:"), 7, 0)
-        layout.addWidget(self.text_rotation_input, 7, 1, 1, 5)
+        layout.addWidget(self.text_rotation_slider, 7, 1, 1, 5)
         layout.addWidget(QLabel("Font Size:"), 8, 0)
         layout.addWidget(self.font_size,8, 1, 1, 5)
         layout.addItem(QSpacerItem(30, 30), 9, 0)
@@ -91,11 +97,11 @@ class IconTextTab(QWidget):
         label = get_label_by_identifier(Settings.LABEL_TYPE)
         height, width = label.dots_printable
         text = self.text_input.text()
-        text_rotation = int(self.text_rotation_input.text())
+        text_rotation = self.text_rotation_slider.value() * 90
         font_size = int(self.font_size.value())
         font_family = self.fonts.currentText()
         icon_path = self.file_path
-        icon_rotation = int(self.icon_rotation_input.text())
+        icon_rotation = self.icon_rotation_slider.value() * 90
         icon_size = self.icon_size.value() / 100.0
         self.temp_output_path = create_icon_text_image(width, height, text, text_rotation, font_size, font_family, icon_path,icon_rotation, icon_size)
         self.preview_changed.emit(self.temp_output_path, 90)

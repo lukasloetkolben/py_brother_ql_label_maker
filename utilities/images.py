@@ -3,8 +3,6 @@ import uuid
 from pathlib import Path
 
 import PIL.Image
-
-from PIL import ImageOps
 import PIL.Image
 from PIL import ImageDraw, ImageFont
 from PIL import ImageOps
@@ -36,7 +34,8 @@ def create_centered_image_on_background(image, width, height, bg_color=(255, 255
     return background
 
 
-def create_icon_text_image(width, height, text="",text_rotation=0, font_size=45, font_family="Arial", icon_path = None, icon_rotation=0, icon_size=.8):
+def create_icon_text_image(width, height, text="", text_rotation=0, font_size=45, font_family="Arial", icon_path=None,
+                           icon_rotation=0, icon_size=.8):
     """
     Create a labeled image with the input text added to the selected image and save it.
     """
@@ -84,11 +83,21 @@ def create_icon_text_image(width, height, text="",text_rotation=0, font_size=45,
         text_width, text_height = font.getsize(text)
 
     # Calculate the text_x coordinate to center the text between the icon and the right edge
-    text_x = icon_width + (available_width - text_width) // 2
-    text_y = (height // 2) - (text_height // 2)
 
     # Draw the text on the image
-    draw.text((text_x, text_y), text, fill="black", font=font)
+    # draw.text((text_x, text_y), text, fill="black", font=font)
+
+    tim = PIL.Image.new('RGBA', (text_width, text_height), (0, 0, 0, 0))
+    dr = ImageDraw.Draw(tim)
+    dr.text((0, 0), text, font=font, fill="black")
+
+    tim = tim.rotate(text_rotation, expand=1)
+    tim_width, tim_height = tim.size
+    text_x = icon_width + (available_width - tim_width) // 2
+    text_y = (height // 2) - (tim_height // 2)
+
+
+    background.paste(tim, (text_x, text_y), tim)
 
     # Save the image
     output_path = Path(config.TEMP_DIR, f"{uuid.uuid1()}.png")

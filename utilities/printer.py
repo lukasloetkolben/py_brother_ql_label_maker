@@ -25,32 +25,3 @@ def run_brother_ql_command(model: str, identifier: str, label: str, file: Path):
         return output
     except subprocess.CalledProcessError as e:
         return e.output
-
-# def find_connected_brother_ql_printers():
-#     vendor_id = 0x04f9  # Brother's Vendor ID
-#     product_id = 0x2015  # Brother's Product ID for QL printers
-#
-#     printers = []
-#
-#     # Find all USB devices with the given vendor and product IDs
-#     usb_devices = usb.core.find(find_all=True, idVendor=vendor_id, idProduct=product_id)
-#
-#     for dev in usb_devices:
-#         # Get the device descriptor
-#         dev_descriptor = usb.util.get_string(dev, dev.iProduct)
-#
-#         # Append the identifier in the desired format to the list of printers
-#         identifier = f"usb://{vendor_id:04x}:{product_id:04x}/{dev_descriptor}"
-#         printers.append(identifier)
-#
-#     return printers
-#
-# if __name__ == "__main__":
-#     connected_printers = find_connected_brother_ql_printers()
-#
-#     if connected_printers:
-#         for printer in connected_printers:
-#             print(printer)
-#     else:
-#         print("No Brother QL printers found.")
-#
