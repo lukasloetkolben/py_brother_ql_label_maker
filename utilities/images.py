@@ -66,9 +66,6 @@ def create_icon_text_image(width, height, text="", text_rotation=0, font_size=45
         traceback.print_exc()
         background.paste(icon, (x_offset, y_offset))
 
-    # Create an ImageDraw object to draw on the background image
-    draw = ImageDraw.Draw(background)
-
     # Get the dimensions of the text using the provided font_size
     font = ImageFont.truetype(f"{font_family}.ttf", font_size)
     text_width, text_height = font.getsize(text)
@@ -82,22 +79,17 @@ def create_icon_text_image(width, height, text="", text_rotation=0, font_size=45
         font = ImageFont.truetype(font_family, font_size)
         text_width, text_height = font.getsize(text)
 
-    # Calculate the text_x coordinate to center the text between the icon and the right edge
+    # Create an ImageDraw object to draw on the background image
+    text_img = PIL.Image.new('RGBA', (text_width, text_height), (0, 0, 0, 0))
+    text_draw = ImageDraw.Draw(text_img)
+    text_draw.text((0, 0), text, font=font, fill="black")
 
-    # Draw the text on the image
-    # draw.text((text_x, text_y), text, fill="black", font=font)
-
-    tim = PIL.Image.new('RGBA', (text_width, text_height), (0, 0, 0, 0))
-    dr = ImageDraw.Draw(tim)
-    dr.text((0, 0), text, font=font, fill="black")
-
-    tim = tim.rotate(text_rotation, expand=1)
-    tim_width, tim_height = tim.size
+    text_img = text_img.rotate(text_rotation, expand=1)
+    tim_width, tim_height = text_img.size
     text_x = icon_width + (available_width - tim_width) // 2
     text_y = (height // 2) - (tim_height // 2)
 
-
-    background.paste(tim, (text_x, text_y), tim)
+    background.paste(text_img, (text_x, text_y), text_img)
 
     # Save the image
     output_path = Path(config.TEMP_DIR, f"{uuid.uuid1()}.png")

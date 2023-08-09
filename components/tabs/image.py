@@ -1,6 +1,6 @@
 from pathlib import Path
 
-from PySide6.QtCore import Signal,Qt
+from PySide6.QtCore import Signal, Qt
 from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QGridLayout, QSpacerItem, QVBoxLayout, \
     QGraphicsView, QGraphicsScene
 

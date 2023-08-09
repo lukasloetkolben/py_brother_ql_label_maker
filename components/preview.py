@@ -4,7 +4,7 @@ from pathlib import Path
 
 from PySide6.QtCore import Qt, QSize
 from PySide6.QtGui import QPixmap, QPalette, QImage, QResizeEvent, QTransform
-from PySide6.QtWidgets import QWidget, QGridLayout, QSizePolicy, QLabel, QFileDialog, QVBoxLayout
+from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QVBoxLayout
 
 import components
 from components.buttons import SuccessButton
@@ -86,13 +86,12 @@ class PreviewComponent(QWidget):
         if not self.pixmap.isNull():
             w = self.size().width() - 25
             h = self.size().height() - 50
-            scaled_pixmap = self.pixmap.scaled(QSize(w,h), Qt.KeepAspectRatio, Qt.SmoothTransformation)
+            scaled_pixmap = self.pixmap.scaled(QSize(w, h), Qt.KeepAspectRatio, Qt.SmoothTransformation)
             self.image_label.setPixmap(scaled_pixmap)
             self.image_label.setFixedWidth(w)
             self.image_label.setFixedHeight(h)
 
             x = self.rect().center().x()
             y = self.rect().center().y()
-            self.image_label.move(x  - (w//2), y - (h//2))
+            self.image_label.move(x - (w // 2), y - (h // 2))
             self.save_as_button.setEnabled(True)
-

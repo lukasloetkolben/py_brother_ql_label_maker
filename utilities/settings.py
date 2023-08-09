@@ -3,6 +3,7 @@ import sys
 
 import config
 
+
 class Settings:
     DPI = 60 if sys.platform == 'darwin' else 80
     PRINTER_MODEL = ""

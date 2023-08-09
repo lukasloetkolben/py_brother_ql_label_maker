@@ -1,7 +1,6 @@
 from pathlib import Path
 
 from PySide6.QtCore import Signal, Qt
-from PySide6.QtGui import QIntValidator
 from PySide6.QtWidgets import QWidget, QLabel, QFileDialog, QLineEdit, QGridLayout, QSpacerItem, QVBoxLayout, QComboBox, \
     QSlider
 
@@ -70,7 +69,7 @@ class IconTextTab(QWidget):
         layout.addWidget(QLabel("Text Rotation:"), 7, 0)
         layout.addWidget(self.text_rotation_slider, 7, 1, 1, 5)
         layout.addWidget(QLabel("Font Size:"), 8, 0)
-        layout.addWidget(self.font_size,8, 1, 1, 5)
+        layout.addWidget(self.font_size, 8, 1, 1, 5)
         layout.addItem(QSpacerItem(30, 30), 9, 0)
         layout.addWidget(self.create_button, 10, 4)
         layout.addWidget(self.print_button, 10, 5)
@@ -103,7 +102,8 @@ class IconTextTab(QWidget):
         icon_path = self.file_path
         icon_rotation = self.icon_rotation_slider.value() * 90
         icon_size = self.icon_size.value() / 100.0
-        self.temp_output_path = create_icon_text_image(width, height, text, text_rotation, font_size, font_family, icon_path,icon_rotation, icon_size)
+        self.temp_output_path = create_icon_text_image(width, height, text, text_rotation, font_size, font_family,
+                                                       icon_path, icon_rotation, icon_size)
         self.preview_changed.emit(self.temp_output_path, 90)
         self.print_button.setEnabled(True)
 

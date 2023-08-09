@@ -1,17 +1,18 @@
 # Python Brother QL Label Maker (PBQLLM)
+
 > [!WARNING]  
-> This project is currently in a working state, but it is not fully functional yet. 
+> This project is currently in a working state, but it is not fully functional yet.
 > It is under active development, and improvements are being made.
 
-
 ## Easy to use!
-Introducing an easy-to-use label maker for Brother printers, optimized for Mac OS and compatible with Linux. Simplify your labeling process and create professional-grade labels effortlessly.
+
+Introducing an easy-to-use label maker for Brother printers, optimized for Mac OS and compatible with Linux. Simplify
+your labeling process and create professional-grade labels effortlessly.
 
 <div style="text-align:center;">
 
 ![](./assets/images/preview.gif)
 </div>
-
 
 ## Prerequisites
 
@@ -39,10 +40,11 @@ Launch PBQLLM by running:
 ./pbqllm
 ```
 
-If a Python 3 virtual environment doesn't exist, it will be automatically created.
-All necessary dependencies will be installed, and the program will start!
+If a Python 3 virtual environment doesn't exist, it will be automatically created. All necessary dependencies will be
+installed, and the program will start!
 
 ### Manual installation (Alternatively)
+
 Alternatively, you can install the dependencies globally by running:
 
 ``` bash
