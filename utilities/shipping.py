@@ -12,7 +12,7 @@ from utilities.printer import get_label_by_identifier
 
 def create_dhl_label(label, pdf_file_path: Path):
     label = get_label_by_identifier("102x152")
-    height, width = label.dots_total
+    height, width = label.dots_printable
 
     images = convert_from_path(pdf_file_path)
     if images:
@@ -44,7 +44,7 @@ def create_dhl_label(label, pdf_file_path: Path):
 
 def create_hermes_label(label, pdf_file_path: Path):
     label = get_label_by_identifier("102x152")
-    height, width = label.dots_total
+    height, width = label.dots_printable
 
     images = convert_from_path(pdf_file_path)
     if images:

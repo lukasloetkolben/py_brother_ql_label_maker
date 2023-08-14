@@ -37,6 +37,7 @@ class AppWindow(QMainWindow):
 
         self.model_type_select = QComboBox()
         self.model_type_select.addItems([model.name for model in ALL_MODELS])
+        self.model_type_select.setCurrentText(Settings.PRINTER_MODEL)
         self.label_type_select = QComboBox()
         self.label_type_select.addItems([label.name for label in ALL_LABELS])
         self.label_type_select.setCurrentText(get_label_by_identifier(Settings.LABEL_TYPE).name)
@@ -118,6 +119,5 @@ class AppWindow(QMainWindow):
     def on_save_clicked(self):
         Settings.PRINTER_IDENTIFIER = self.printer_identifier.text().strip()
         Settings.PRINTER_MODEL = self.model_type_select.currentText()
-
         Settings.save_setting_json()
         self.save_button.setEnabled(False)
