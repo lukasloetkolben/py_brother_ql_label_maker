@@ -83,8 +83,29 @@ def create_ebay_stamp_label(label, pdf_file_path: Path):
     return None, None
 
 
+def create_deutsche_post_stamp_label(label, pdf_file_path: Path):
+    height, width = label.dots_printable
+
+    images = convert_from_path(pdf_file_path)
+    if images:
+        image = images[0]
+        pdf_width, pdf_height = image.size
+        print(pdf_width, pdf_height)
+        # image.crop((left, top, right, bottom))
+        image = image.crop((110, 230, 690, 560))
+        image = create_centered_image_on_background(image, width, height, bg_color=(255, 255, 255))
+
+        # Save the image
+        output_path = Path(config.TEMP_DIR, f"{uuid.uuid1()}.png")
+        image.save(str(output_path))
+        return label, output_path
+
+    return None, None
+
+
 shipping_companies = {
     'DHL': create_dhl_label,
     'Hermes': create_hermes_label,
     'eBay Stamp': create_ebay_stamp_label,
+    'Deutsche Post Stamp': create_deutsche_post_stamp_label
 }
