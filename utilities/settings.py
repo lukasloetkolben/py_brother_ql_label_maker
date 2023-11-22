@@ -1,15 +1,18 @@
 import json
 import sys
 
+from brother_ql.labels import ALL_LABELS
+from brother_ql.models import ALL_MODELS
+
 import config
 
 
 class Settings:
     DPI = 60 if sys.platform == 'darwin' else 80
-    PRINTER_MODEL = ""
+    PRINTER_MODEL = ALL_MODELS[0].name
     PRINTER_IDENTIFIER = ""
-    LABEL_TYPE = ""
-    SAVE_AS_PATH = config.HOME_DIR
+    LABEL_TYPE = ALL_LABELS[0].identifier
+    SAVE_AS_PATH = str(config.HOME_DIR)
 
     @staticmethod
     def get_all_variables():
@@ -36,6 +39,7 @@ class Settings:
         if settings_file.is_file():
             with open(settings_file, "r") as json_file:
                 settings_json = json.load(json_file)
+
                 for var, value in Settings.get_all_variables():
                     key = var.lower()  # Convert variable name to lowercase as per the JSON format
                     if key in settings_json:

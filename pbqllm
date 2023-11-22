@@ -27,6 +27,20 @@ if ! test -f "$SCRIPT_DIR/venv/bin/python3"; then
     echo "Virtual environment created and dependencies installed."
 fi
 
+# Check if lsusb is installed
+if ! command -v lsusb &> /dev/null; then
+    # Check if the system is macOS and recommend installing lsusb with Homebrew
+    if [[ "$OSTYPE" == "darwin"* ]]; then
+        if command -v brew &> /dev/null; then
+            brew install lsusb
+        else
+            echo "lsusb is not installed, and Homebrew is not found. Please install Homebrew first."
+        fi
+    else
+        echo "lsusb is not installed. Please install lsusb and try again."
+        exit 1
+    fi
+fi
 
 # Run the Python script
 source  "$SCRIPT_DIR/venv/bin/activate"

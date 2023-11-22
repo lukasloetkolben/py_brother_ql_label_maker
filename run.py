@@ -8,6 +8,7 @@ from PySide6.QtQuick import QQuickWindow, QSGRendererInterface
 from PySide6.QtWidgets import QApplication
 
 import components
+import config
 from config import COLORS, CONFIG_DIR, TEMP_DIR, STYLE
 from utilities.settings import Settings
 
@@ -25,6 +26,8 @@ if __name__ == '__main__':
     # create necessary folders
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     TEMP_DIR.mkdir(parents=True, exist_ok=True)
+    if not config.SETTINGS_FILE.is_file():
+        Settings.save_setting_json()
     Settings.read_setting_json()
     os.environ["QT_FONT_DPI"] = str(Settings.DPI)
 

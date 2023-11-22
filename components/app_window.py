@@ -2,13 +2,15 @@
 
 import shutil
 from pathlib import Path
-
+import subprocess
+import re
 from PySide6.QtCore import Qt
 from PySide6.QtWidgets import QMainWindow, QSplitter, QTabWidget, QComboBox, QLineEdit, QLabel, QWidget, \
     QHBoxLayout, QVBoxLayout, QApplication
 from brother_ql.labels import ALL_LABELS
 from brother_ql.models import ALL_MODELS
 
+import components
 from components.buttons import SuccessButton
 from components.icon import Icon
 from components.preview import PreviewComponent
@@ -43,6 +45,7 @@ class AppWindow(QMainWindow):
         self.label_type_select.setCurrentText(get_label_by_identifier(Settings.LABEL_TYPE).name)
         self.label_type_select.setFixedWidth(250)
         self.printer_identifier = QLineEdit(Settings.PRINTER_IDENTIFIER)
+        self.auto_search_button = SuccessButton("find", clicked=self.on_auto_search_clicked)
         self.save_button = SuccessButton("save", clicked=self.on_save_clicked)
         self.save_button.setEnabled(False)
 
@@ -58,7 +61,7 @@ class AppWindow(QMainWindow):
         shipping = ShippingTab(self)
         self.tabs.addTab(shipping, "Shipping")
         image = ImageTab(self)
-        self.tabs.addTab(image, "Image")
+        # self.tabs.addTab(image, "Image")
 
         # Layouts
         self.splitter.addWidget(self.tabs)
@@ -74,6 +77,7 @@ class AppWindow(QMainWindow):
         top_layout.addWidget(self.model_type_select)
         top_layout.addWidget(QLabel("Printer:"))
         top_layout.addWidget(self.printer_identifier)
+        top_layout.addWidget(self.auto_search_button)
         top_layout.addWidget(self.save_button)
 
         layout = QVBoxLayout()
@@ -93,6 +97,7 @@ class AppWindow(QMainWindow):
         self.printer_identifier.textChanged.connect(self.on_printer_settings_changed)
 
         self.move_to_center()
+        self.on_printer_settings_changed()
 
     def move_to_center(self):
         screen_rect = QApplication.primaryScreen().geometry()
@@ -114,7 +119,45 @@ class AppWindow(QMainWindow):
         Settings.save_setting_json()
 
     def on_printer_settings_changed(self, *args, **kwargs):
-        self.save_button.setEnabled(True)
+        if not self.printer_identifier.text().strip():
+            self.save_button.setEnabled(False)
+
+        elif Settings.PRINTER_IDENTIFIER != self.printer_identifier.text().strip():
+            self.save_button.setEnabled(True)
+
+        elif Settings.PRINTER_MODEL != self.model_type_select.currentText():
+            self.save_button.setEnabled(True)
+
+        if self.printer_identifier.text().strip():
+            self.auto_search_button.hide()
+        else:
+            self.auto_search_button.show()
+
+    def on_auto_search_clicked(self):
+        try:
+            lsusb_output = subprocess.check_output(['lsusb']).decode('utf-8')
+
+            for line in lsusb_output.split('\n'):
+                if "brother" in line.lower() and "serial" in line.lower():
+
+                    pattern = re.compile(r'ID (\w+:\w+).*Serial: (\w+)')
+
+                    match = pattern.search(line)
+
+                    if match:
+                        usb_id = match.group(1)
+                        serial_number = match.group(2)
+                        self.printer_identifier.setText(f'usb://{usb_id}/{serial_number}')
+                        self.save_button.setEnabled(True)
+
+                        for model in [model.name for model in ALL_MODELS]:
+                            if model.lower() in line.lower():
+                                self.model_type_select.setCurrentText(model)
+                                return
+        except Exception:
+            pass
+
+        self.status.show_message("No Brother Label-Printer found!", "warning")
 
     def on_save_clicked(self):
         Settings.PRINTER_IDENTIFIER = self.printer_identifier.text().strip()
