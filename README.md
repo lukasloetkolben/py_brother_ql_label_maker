@@ -51,7 +51,12 @@ Alternatively, you can install the dependencies globally by running:
 pip3 install -r requirements.txt
 python3 run.py
 ```
-
+### Issues?
+"usb.core.NoBackendError: No backend available" on MacOs? run:
+``` bash
+brew install libusb
+export DYLD_LIBRARY_PATH="/opt/homebrew/lib:$DYLD_LIBRARY_PATH"
+```
 ## Get Started with PBQLLM
 
 With PBQLLM successfully set up, you can now easily create labels for your Brother QL Label Printer.
